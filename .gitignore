@@ -1,0 +1,47 @@
+# Environments & secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Next.js build output
+.next/
+out/
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+.pytest_cache/
+
+# Blockchain & Hardhat artifacts
+cache/
+artifacts/
+coverage/
+coverage.json
+typechain/
+typechain-types/
+
+# Runtime data & logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+backend/data/simulated_ledger.json
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
