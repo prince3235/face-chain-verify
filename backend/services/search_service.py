@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from config import get_settings
 from services.consent_registry import ConsentedEntry, ConsentRegistry
+from services.web_search_service import WebSearchService
 
 
 class MatchResult(BaseModel):
@@ -28,7 +29,9 @@ class SearchService:
     def __init__(self, registry: Optional[ConsentRegistry] = None):
         settings = get_settings()
         self.threshold = settings.similarity_threshold
+        self.web_search_enabled = settings.web_search_enabled
         self.registry = registry or ConsentRegistry()
+        self.web_search_service = WebSearchService()
 
     @staticmethod
     def _cosine_similarity(a: List[float], b: List[float]) -> float:
@@ -61,3 +64,19 @@ class SearchService:
             source_platform=post.platform,
             confidence=round(best_score, 4),
         )
+
+    def find_match_full(self, embedding: List[float], image_bytes: Optional[bytes] = None) -> MatchResult:
+        if self.web_search_enabled and image_bytes:
+            web_result = self.web_search_service.search(image_bytes)
+            if web_result and web_result.get("found"):
+                return MatchResult(
+                    found=True,
+                    post_url=web_result.get("post_url"),
+                    post_text=web_result.get("post_text"),
+                    source_platform=web_result.get("source_platform"),
+                    confidence=web_result.get("confidence")
+                )
+        
+        # Fallback to consented registry
+        return self.find_match(embedding)
+

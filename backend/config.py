@@ -13,6 +13,7 @@ class Settings(BaseSettings):
 
     consent_registry_path: str = "data/consented_dataset/registry.json"
     similarity_threshold: float = 0.75
+    web_search_enabled: bool = True
 
     # "simulate" -> local JSON ledger, no real chain, no keys needed.
     # "testnet"  -> real transactions via web3.py against a deployed contract.

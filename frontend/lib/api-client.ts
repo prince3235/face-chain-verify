@@ -1,6 +1,7 @@
 export interface FaceEncoding {
   embedding: number[];
   faceBoundingBox: { x: number; y: number; width: number; height: number };
+  imageBase64?: string;
 }
 
 export interface MatchResult {
@@ -39,7 +40,22 @@ export async function detectFace(file: File): Promise<FaceEncoding> {
   formData.append("image", file);
   const res = await fetch("/api/detect-face", { method: "POST", body: formData });
   if (!res.ok) throw new Error("Face detection failed");
-  return res.json();
+  const data = await res.json();
+  
+  // Extract base64 from file to pass to search-match later
+  const base64 = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const b64 = result.split(",")[1] || result;
+      resolve(b64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+  data.imageBase64 = base64;
+  
+  return data;
 }
 
 export async function searchMatch(encoding: FaceEncoding): Promise<MatchResult> {

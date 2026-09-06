@@ -69,10 +69,19 @@ async def detect_face(image: UploadFile = File(...)):
 @app.post("/search-match", response_model=MatchResultResponse)
 async def search_match(payload: dict):
     embedding = payload.get("embedding")
+    image_base64 = payload.get("imageBase64")
     if not embedding:
         raise HTTPException(status_code=400, detail="Missing `embedding` in request body.")
 
-    result = search_service.find_match(embedding)
+    image_bytes = None
+    if image_base64:
+        import base64
+        try:
+            image_bytes = base64.b64decode(image_base64)
+        except Exception as e:
+            logger.warning(f"Could not decode imageBase64: {e}")
+
+    result = search_service.find_match_full(embedding, image_bytes)
     return MatchResultResponse(
         found=result.found,
         post_url=result.post_url,
