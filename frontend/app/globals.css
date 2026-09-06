@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #faf9f6;
+  --surface: #f0efea;
+  --surface-raised: #ffffff;
+  --border: rgba(10, 13, 18, 0.1);
+  --text: #14171c;
+  --text-muted: #5b6270;
+
+  --accent-scan: #0e9c8c;
+  --accent-scan-dim: rgba(14, 156, 140, 0.18);
+  --accent-verify: #b5791f;
+  --accent-verify-dim: rgba(181, 121, 31, 0.18);
+  --danger: #c4432f;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.dark {
+  --ink: #0a0d12;
+  --surface: #12161d;
+  --surface-raised: #181d26;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #e7e9ed;
+  --text-muted: #8a93a3;
+
+  --accent-scan: #43d9c8;
+  --accent-scan-dim: rgba(67, 217, 200, 0.18);
+  --accent-verify: #e8a33d;
+  --accent-verify-dim: rgba(232, 163, 61, 0.18);
+  --danger: #e2685a;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: var(--accent-scan-dim);
+  color: var(--text);
+}
+
+/* Scan grid backdrop — one deliberate ambient motion, not decoration everywhere */
+.scan-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scanline,
+  .animate-gridshift,
+  .animate-pulsering,
+  .animate-rise {
+    animation: none !important;
+  }
+}
+
+/* visible keyboard focus, everywhere */
+:focus-visible {
+  outline: 2px solid var(--accent-scan);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
