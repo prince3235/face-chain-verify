@@ -29,6 +29,7 @@ class MatchResultResponse(CamelModel):
     source_platform: Optional[str] = None
     confidence: Optional[float] = None
     post_text: Optional[str] = None
+    person_name: Optional[str] = None
 
 
 class ChainRecordResponse(CamelModel):

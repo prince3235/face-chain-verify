@@ -11,6 +11,7 @@ from services.web_search_service import WebSearchService
 class MatchResult(BaseModel):
     found: bool
     person_id: Optional[str] = None
+    person_name: Optional[str] = None
     post_url: Optional[str] = None
     post_text: Optional[str] = None
     source_platform: Optional[str] = None
@@ -71,6 +72,7 @@ class SearchService:
             if web_result and web_result.get("found"):
                 return MatchResult(
                     found=True,
+                    person_name=web_result.get("person_name"),
                     post_url=web_result.get("post_url"),
                     post_text=web_result.get("post_text"),
                     source_platform=web_result.get("source_platform"),

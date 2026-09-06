@@ -88,6 +88,7 @@ async def search_match(payload: dict):
         source_platform=result.source_platform,
         confidence=result.confidence,
         post_text=result.post_text,
+        person_name=result.person_name,
     )
 
 

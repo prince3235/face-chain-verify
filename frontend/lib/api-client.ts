@@ -11,6 +11,7 @@ export interface MatchResult {
   sourcePlatform?: string;
   confidence?: number;
   postText?: string;
+  personName?: string;
 }
 
 export interface ChainRecord {
